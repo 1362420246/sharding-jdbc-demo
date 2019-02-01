@@ -1,1 +1,1 @@
-"# sharding-jdbc-demo" 
+分库分表 + 读写分离
