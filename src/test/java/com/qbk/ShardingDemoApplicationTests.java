@@ -38,6 +38,10 @@ public class ShardingDemoApplicationTests {
 
         System.out.println(result1);
 
+        List<UserEntity> result2 = userMapper.getUser();
+
+        System.out.println(result2);
+
     }
 
 }
