@@ -5,10 +5,10 @@
 
     <insert id="insertUser" parameterType="UserEntity" >
       insert into tab_user
-      (user_id,user_name)
+     (user_name)
       VALUE
       (
-         #{userId},#{userName}
+        #{userName}
       )
     </insert>
 

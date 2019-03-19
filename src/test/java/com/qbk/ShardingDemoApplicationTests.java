@@ -20,13 +20,16 @@ public class ShardingDemoApplicationTests {
 	@Test
 	public void insertUser() {
 
-        UserEntity user1 = UserEntity.builder().userId(3).userName("kk").build();
-        UserEntity user2 = UserEntity.builder().userId(4).userName("qbk").build();
+        UserEntity user1 = UserEntity.builder().userName("kk").build();
+        UserEntity user2 = UserEntity.builder().userName("qbk").build();
+        UserEntity user3 = UserEntity.builder().userName("quboka").build();
 
         int result1 = userMapper.insertUser(user1);
         int result2 = userMapper.insertUser(user2);
+        int result3 = userMapper.insertUser(user3);
         System.out.println(result1);
         System.out.println(result2);
+        System.out.println(result3);
 
     }
 
