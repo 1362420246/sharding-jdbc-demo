@@ -81,6 +81,8 @@ public class SnowFlakeGenerator {
      */
     private int maxSequenceValue;
 
+    private byte sequenceOffset;
+
     private SnowFlakeGenerator(int idcBitNum, int machineBitNum, long idcId, long machineId) {
         int sequenceBitNum = REMAIN_BIT_NUM - idcBitNum - machineBitNum;
 
@@ -104,23 +106,29 @@ public class SnowFlakeGenerator {
     public synchronized long nextId() {
         long currentStamp = getTimeMill();
         if (currentStamp < lastStamp) {
-            throw new RuntimeException(String.format("Clock moved backwards. Refusing to generate id for %d milliseconds", lastStamp - currentStamp));
+            //解决时钟倒退
+            long timeDifferenceMilliseconds = lastStamp - currentStamp;
+            String.format("Clock moved backwards. Refusing to generate id for %d milliseconds", lastStamp - currentStamp);
+            try {
+                Thread.sleep(timeDifferenceMilliseconds);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            currentStamp = getTimeMill();
         }
-
-        //解决都是偶数
-        sequence = (sequence + 1) & this.maxSequenceValue;
-
         //新的毫秒，序列从0开始，否则序列自增
-//        if (currentStamp == lastStamp) {
-//            sequence = (sequence + 1) & this.maxSequenceValue;
-//            if (sequence == 0L) {
-//                //Twitter源代码中的逻辑是循环，直到下一个毫秒
-//                lastStamp = tilNextMillis();
-//                throw new IllegalStateException("sequence over flow");
-//            }
-//        } else {
-//            sequence = 0L;
-//        }
+        if (currentStamp == lastStamp) {
+            sequence = (sequence + 1) & this.maxSequenceValue;
+            if (sequence == 0L) {
+                //Twitter源代码中的逻辑是循环，直到下一个毫秒
+                lastStamp = tilNextMillis();
+                throw new IllegalStateException("sequence over flow");
+            }
+        } else {
+            //解决毫秒内并发度不高都是偶数
+            vibrateSequenceOffset();
+            sequence = sequenceOffset;
+        }
 
         lastStamp = currentStamp;
 
@@ -137,5 +145,8 @@ public class SnowFlakeGenerator {
             timestamp = getTimeMill();
         }
         return timestamp;
+    }
+    private void vibrateSequenceOffset() {
+        sequenceOffset = (byte) (~sequenceOffset & 1);
     }
 }
