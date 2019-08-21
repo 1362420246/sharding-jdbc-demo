@@ -1,9 +1,6 @@
 package com.qbk.util;
 
-import com.dangdang.ddframe.rdb.sharding.id.generator.IdGenerator;
-import com.dangdang.ddframe.rdb.sharding.id.generator.self.CommonSelfIdGenerator;
-import com.dangdang.ddframe.rdb.sharding.id.generator.self.HostNameIdGenerator;
-import com.dangdang.ddframe.rdb.sharding.id.generator.self.IPIdGenerator;
+
 import io.shardingsphere.core.keygen.KeyGenerator;
 
 import java.util.HashSet;
@@ -14,12 +11,7 @@ import java.util.Set;
  */
 public class IdKeyGenerator implements KeyGenerator {
 
-    /**
-     * 当当
-     */
-    private static IdGenerator idGenerator1 = new CommonSelfIdGenerator();
-    private static IdGenerator idGenerator2 = new IPIdGenerator();
-    private static IdGenerator idGenerator3 = new HostNameIdGenerator();
+
     /**
      * 雪花算法(snowflake)
      */

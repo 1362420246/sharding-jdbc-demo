@@ -3,20 +3,18 @@
 <mapper namespace="com.qbk.mapper.UserMapper" >
 
 
-    <insert id="insertUser" parameterType="UserEntity" >
+    <insert id="insertUser" parameterType="com.qbk.entity.UserEntity" >
       insert into tab_user
-     (user_name)
+     (user_name,password)
       VALUE
       (
-        #{userName}
+        #{userName},#{password}
       )
     </insert>
 
-   <select id="getUser" resultType="UserEntity" >
-
-       SELECT user_id AS userId , user_name AS userName
+   <select id="getUser" resultType="com.qbk.entity.UserEntity" >
+       SELECT user_id AS userId , user_name AS userName,password
        FROM tab_user
-
    </select>
 
 
